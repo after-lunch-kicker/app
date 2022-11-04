@@ -6,7 +6,7 @@ export const UnauthedOnlyGuard: FC = () => {
   const { user } = useAuthContext();
 
   if (user != null) {
-    return <Navigate to="/" />;
+    return <Navigate to="/lobbies" />;
   }
 
   return <Outlet />;
