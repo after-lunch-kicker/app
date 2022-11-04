@@ -1,23 +1,13 @@
 import { createBrowserRouter, Navigate, RouteObject } from 'react-router-dom';
 import { authRoutes } from '../features/auth';
+import { lobbiesRoutes } from '../features/lobbies';
 import { AuthedOnlyGuard } from '../guards/AuthedOnlyGuard';
 import { UnauthedOnlyGuard } from '../guards/UnauthedOnlyGuard';
-import { DefaultLayout } from '../layouts/DefaultLayout';
 
 const routes: RouteObject[] = [
   {
     element: <AuthedOnlyGuard />,
-    children: [
-      {
-        element: <DefaultLayout />,
-        children: [
-          {
-            path: '/',
-            element: <div>🤡</div>,
-          },
-        ],
-      },
-    ],
+    children: lobbiesRoutes,
   },
   {
     element: <UnauthedOnlyGuard />,
@@ -25,7 +15,7 @@ const routes: RouteObject[] = [
   },
   {
     path: '*',
-    element: <Navigate to="/auth" />,
+    element: <Navigate to="/lobbies" />,
   },
 ];
 

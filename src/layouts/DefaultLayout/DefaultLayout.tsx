@@ -1,4 +1,4 @@
-import { Center, Stack } from '@mantine/core';
+import { Container, Stack } from '@mantine/core';
 import { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 import { AppNavigation } from '../../components/AppNavigation/AppNavigation';
@@ -6,19 +6,20 @@ import { AppNavigation } from '../../components/AppNavigation/AppNavigation';
 export const DefaultLayout: FC = () => (
   <Stack
     sx={{
-      p: 'md',
       height: '100%',
     }}
+    spacing={32}
   >
-    <Center
-      sx={{
+    <Container
+      sx={theme => ({
         minHeight: '50%',
         marginTop: 'auto',
         width: '100%',
-      }}
+        paddingInline: theme.spacing.md,
+      })}
     >
       <Outlet />
-    </Center>
+    </Container>
     <AppNavigation />
   </Stack>
 );

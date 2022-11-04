@@ -5,4 +5,9 @@ export const Button: MantineThemeComponent = {
     size: 'xl',
     radius: 'lg',
   },
+  styles: theme => ({
+    label: {
+      fontSize: theme.fontSizes.lg,
+    },
+  }),
 };
