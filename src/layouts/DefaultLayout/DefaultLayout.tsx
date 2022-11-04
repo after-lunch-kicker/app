@@ -12,7 +12,7 @@ export const DefaultLayout: FC = () => (
   >
     <Container
       sx={theme => ({
-        minHeight: 'calc(50%)',
+        minHeight: '50%',
         marginTop: 'auto',
         width: '100%',
         paddingInline: theme.spacing.md,
