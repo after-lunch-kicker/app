@@ -1,20 +1,11 @@
 import { Button, Stack, Text, Title } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
-import { FC, useCallback, useEffect, useState } from 'react';
-import { Lobby } from '../../../../models/Lobby';
-import { LobbyService } from '../../../../services/lobby';
-import { LobbyItem } from '../../component/LobbyItem';
+import { FC, useCallback } from 'react';
+import { LobbyItem } from '../../components';
+import { useLobbiesQuery } from '../../queries';
 
 export const LobbiesPage: FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [lobbies, setLobbies] = useState<Lobby[] | null>(null);
-
-  useEffect(() => {
-    LobbyService.getLobbies().then(ls => {
-      setLobbies(ls);
-      setIsLoading(false);
-    });
-  }, []);
+  const { data: lobbies, isLoading } = useLobbiesQuery();
 
   const handleLobbyCreate = useCallback(() => {
     showNotification({

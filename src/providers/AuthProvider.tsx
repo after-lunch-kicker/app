@@ -1,6 +1,8 @@
-import { createContext, PropsWithChildren, useMemo, useState, FC, useContext, useEffect } from 'react';
+import { createContext, PropsWithChildren, useMemo, FC, useContext, useEffect } from 'react';
 import { User } from '@supabase/supabase-js';
 import { SupabaseService } from '../services/supabase';
+import { queryClient } from '../api';
+import { USER_QUERY_KEY, useUserQuery } from '../queries';
 
 interface AuthContext {
 
@@ -16,20 +18,10 @@ export const authContext = createContext<AuthContext>(defaultAuth);
 
 /** Provides auth object. */
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data: user, isLoading } = useUserQuery();
 
   useEffect(() => {
-    const init = async(): Promise<void> => {
-      const session = await SupabaseService.getSession();
-
-      setUser(session?.user ?? null);
-      setLoading(false);
-    };
-
-    init();
-
-    const { unsubscribe } = SupabaseService.onUserChange(setUser);
+    const { unsubscribe } = SupabaseService.onUserChange(data => queryClient.setQueryData(USER_QUERY_KEY, data));
 
     return () => {
       unsubscribe();
@@ -37,12 +29,12 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   const value: AuthContext = useMemo(() => ({
-    user,
+    user: user ?? null,
   }), [user]);
 
   return (
     <authContext.Provider value={value}>
-      {!loading && children}
+      {!isLoading && children}
     </authContext.Provider>
   );
 };
